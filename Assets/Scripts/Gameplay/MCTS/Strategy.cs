@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace MCTS
 {
+    // Benchmark
     public static class NaiveStrategy
     {
         // gives simulation result based on heuristics
@@ -18,6 +19,8 @@ namespace MCTS
         }
     }
 
+    // Pick best influence tile
+    // has penalty on distance
     public static class ShortestPathStrategy
     {
         // penalty on distance

@@ -157,7 +157,7 @@ MonoBehaviour:
   coord:
     x: 10
     z: 10
-  formationPrefab: {fileID: 1707960840081967581, guid: bd1ef3ae865f04c8fa05d70553c48b71,
+  formationPrefab: {fileID: 1707960840081967581, guid: 7eeadfda969df4d299b208ca521e7f29,
     type: 3}
 --- !u!4 &80016583
 Transform:
@@ -188,7 +188,7 @@ MonoBehaviour:
   config: {fileID: 11400000, guid: 1120e6d967b824ea0be73910e4ef67cb, type: 2}
   friendColor: {r: 1, g: 0.45, b: 0.8, a: 1}
   enemyColor: {r: 0.1, g: 0.2, b: 0.8, a: 1}
-  displayThreshold: 4
+  displayThreshold: 2
   displayEnemy: 1
   displayPlayer: 1
 --- !u!114 &80016585

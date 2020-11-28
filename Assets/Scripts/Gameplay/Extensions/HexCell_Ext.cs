@@ -6,7 +6,7 @@ public static class HexCellExtension
 {
     public static bool Unpassable(this HexCell cell)
     {
-        if (cell.Elevation < 0 || cell.unit != null ||
+        if (cell.Elevation < 0 || cell.unit != null || cell.grass != null ||
             cell.material == HexMaterial.DarkRed ||
             cell.material == HexMaterial.Red)
             return true;
