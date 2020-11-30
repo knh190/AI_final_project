@@ -12,6 +12,8 @@ public class FormationGenerator : MonoBehaviour
     public HexCoordinates coord;
     public Formation formationPrefab;
 
+    public ComputeShader influenceShader;
+
     internal InfluenceMap playerInfluence;
     internal InfluenceMap enemyInfluence;
 
@@ -41,9 +43,11 @@ public class FormationGenerator : MonoBehaviour
     private void Start()
     {
         playerInfluence = ScriptableObject.CreateInstance<InfluenceMap>();
+        if (influenceShader) playerInfluence.shader = influenceShader;
         playerInfluence.Initialize();
 
         enemyInfluence = ScriptableObject.CreateInstance<InfluenceMap>();
+        if (influenceShader) enemyInfluence.shader = influenceShader;
         enemyInfluence.Initialize();
 
         InitializeSpawnPoints();

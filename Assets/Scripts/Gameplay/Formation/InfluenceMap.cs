@@ -20,6 +20,27 @@ public class InfluenceMap : ScriptableObject
     public delegate void OnTownDestroy();
     public static OnTownDestroy TownDestroyEvent;
 
+    #region Compute Shader
+    //struct TerrainData
+    //{
+    //    public bool hasTown;
+    //    public bool hasUnit;
+    //    public int elevation;
+    //};
+    struct InfluenceData
+    {
+        public int terrain;
+        public int enemies;
+        public int friends;
+        public int overall;
+    }
+
+    public ComputeShader shader;
+    private ComputeBuffer buffer;
+    private InfluenceData[] output;
+    private InfluenceData[] data;
+    #endregion
+
     public void Initialize()
     {
         int size = HexGrids.instance.Cells.Length;
@@ -29,7 +50,17 @@ public class InfluenceMap : ScriptableObject
         friendMap = new int[size];
         overallMap = new int[size];
 
-        //InitializeTerrainMap();
+        // initialize compute shader
+        buffer = new ComputeBuffer(size, sizeof(int) * 4);
+        data = new InfluenceData[size];
+        output = new InfluenceData[size];
+
+        for (int i = 0; i < data.Length; ++i)
+        {
+            data[i].terrain = terrainMap[i];
+            data[i].enemies = enemyMap[i];
+            data[i].friends = friendMap[i];
+        }
     }
 
     public void Refresh()
@@ -48,11 +79,30 @@ public class InfluenceMap : ScriptableObject
 
     public int[] UpdateOverallMap()
     {
-        int size = HexGrids.instance.Cells.Length;
-
-        for (int i = 0; i < size; i++)
+        // enable GPU mode
+        if (shader != null)
         {
-            overallMap[i] = friendMap[i] - enemyMap[i] + terrainMap[i];
+            buffer.SetData(data);
+            int kernel = shader.FindKernel("OverallInfluence");
+            shader.SetBuffer(kernel, "dataBuffer", buffer);
+            shader.Dispatch(kernel, data.Length, 1, 1);
+
+            buffer.GetData(output);
+            for (int i = 0; i < output.Length; ++i)
+            {
+                overallMap[i] = output[i].overall;
+            }
+        }
+        // calculate using CPU
+        else
+        {
+            int size = HexGrids.instance.Cells.Length;
+
+            for (int i = 0; i < size; i++)
+            {
+                overallMap[i] = friendMap[i] - enemyMap[i] + terrainMap[i];
+            }
+            return overallMap;
         }
         return overallMap;
     }

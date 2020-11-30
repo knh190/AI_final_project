@@ -159,6 +159,7 @@ MonoBehaviour:
     z: 10
   formationPrefab: {fileID: 1707960840081967581, guid: 7eeadfda969df4d299b208ca521e7f29,
     type: 3}
+  influenceShader: {fileID: 7200000, guid: 19709eb3d53ac4430a305604313dd37d, type: 3}
 --- !u!4 &80016583
 Transform:
   m_ObjectHideFlags: 0

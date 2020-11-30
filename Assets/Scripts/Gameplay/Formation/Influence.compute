@@ -1,0 +1,19 @@
+﻿#pragma kernel OverallInfluence
+
+struct InfluenceData
+{
+    int terrain;
+    int enemies;
+    int friends;
+    int overall;
+};
+
+RWStructuredBuffer<InfluenceData> dataBuffer;
+
+[numthreads(8,8,1)]
+void OverallInfluence (uint3 id : SV_DispatchThreadID)
+{
+    InfluenceData data = dataBuffer[id.x];
+
+    dataBuffer[id.x].overall = data.friends + data.terrain - data.enemies;
+}
